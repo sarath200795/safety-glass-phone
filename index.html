@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111"><link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>Safety Glass</title><link rel="stylesheet" href="app.css"></head><body>
+<div id="stage"><video id="video" playsinline muted autoplay></video><canvas id="frozen" hidden></canvas>
+<div id="label">Loading model…</div><div id="status"></div></div>
+<div id="bar"><button id="startBtn" class="big">▶ Start camera</button>
+<button id="okBtn" class="big green" disabled>✔ Confirm correct</button>
+<button id="fixBtn" class="big red" disabled>✎ Correct</button>
+<button id="setBtn" class="small">⚙</button></div>
+<div id="picker" class="sheet" hidden><h2>What is it really?</h2><div id="choices"></div>
+<input id="note" placeholder="Optional note"><button id="cancelBtn" class="big">Cancel</button></div>
+<div id="settings" class="sheet" hidden><h2>Settings</h2>
+<label>Apps Script web app URL<input id="url" placeholder="https://script.google.com/macros/s/…/exec"></label>
+<label>OK threshold <input id="thr" type="number" step="0.05" min="0" max="1"></label>
+<label>Classify every N frames <input id="every" type="number" min="1" max="30"></label>
+<p id="qinfo"></p><button id="retryBtn" class="big">Retry uploads now</button>
+<button id="saveSet" class="big green">Save</button></div>
+<script src="ort.wasm.min.js"></script><script src="app.js"></script></body></html>
