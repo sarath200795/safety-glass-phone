@@ -11,3 +11,6 @@ button{border:0;border-radius:12px;font-size:18px;font-weight:700;color:#fff;bac
 .sheet[hidden]{display:none}#choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #choices button{min-height:76px;font-size:20px}#choices button.guess{outline:5px solid #ffd400}
 input{width:100%;font-size:18px;padding:12px;border-radius:8px;border:0;margin-top:4px}label{font-size:16px}
+#label b{font-size:1.4em;letter-spacing:.03em}#label small{display:block;font-size:.6em;opacity:.85;margin-top:2px}
+#choices .yn{display:flex;gap:8px}#choices .yn button{flex:1;font-size:1.1em;padding:12px}#choices button.sel{outline:3px solid #fff;font-weight:bold}
+#choices .red{background:#b22}#choices .green{background:#282}

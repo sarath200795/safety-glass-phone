@@ -9,11 +9,11 @@
 <button id="okBtn" class="big green" disabled>✔ Confirm correct</button>
 <button id="fixBtn" class="big red" disabled>✎ Correct</button>
 <button id="setBtn" class="small">⚙</button></div>
-<div id="picker" class="sheet" hidden><h2>What is it really?</h2><div id="choices"></div>
+<div id="picker" class="sheet" hidden><h2>Correct this photo</h2><div id="choices"></div>
 <input id="note" placeholder="Optional note"><button id="cancelBtn" class="big">Cancel</button></div>
 <div id="settings" class="sheet" hidden><h2>Settings</h2>
 <label>Apps Script web app URL<input id="url" placeholder="https://script.google.com/macros/s/…/exec"></label>
-<label>OK threshold <input id="thr" type="number" step="0.05" min="0" max="1"></label>
+<label>Defect threshold: <span id="thrv"></span> (lower = more defects flagged, default 0.5)<input id="thr" type="range" step="0.05" min="0.1" max="0.9"></label>
 <label>Classify every N frames <input id="every" type="number" min="1" max="30"></label>
 <p id="qinfo"></p><button id="retryBtn" class="big">Retry uploads now</button>
 <button id="saveSet" class="big green">Save</button></div>
