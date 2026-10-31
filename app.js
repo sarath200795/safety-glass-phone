@@ -56,7 +56,7 @@ async function record(isDef,cat){const f=frozen,d=f.d;const blob=await new Promi
   meta:{true_defect:isDef,true_category:cat,true_label:trueLabel,predicted_defect:d.defect,predicted_category:d.category,predicted_label:f.pred,
   p_defect:+d.pDefect.toFixed(4),p_defect_v1:+d.pV1.toFixed(4),p_ok_v4:+d.pOk4.toFixed(4),category_conf:+d.catConf.toFixed(4),
   probs:f.probs&&f.probs.slice(0,7).map(x=>+x.toFixed(4)),class_order:NAMES,timestamp:f.ts,
-  note:$('note').value||'',width:f.canvas.width,height:f.canvas.height,model:'two-stage: v1 binary.onnx + v4 model.onnx (mean defect score)',defect_threshold:cfg.T,user_agent:navigator.userAgent},blob};
+  note:$('note').value||'',width:f.canvas.width,height:f.canvas.height,model:'two-stage: v5 binary.onnx + v4 model.onnx (mean defect score)',defect_threshold:cfg.T,user_agent:navigator.userAgent},blob};
  await qAdd(item);unfreeze();toast((isDef===d.defect&&cat===d.category)?'Saved as correct ✓':'Saved correction → '+(isDef?'DEFECT':'NO DEFECT')+' · '+SHORT[cat]);flush()}
 function toast(t){$('label').textContent=t}
 
