@@ -6,9 +6,12 @@
 <div id="stage"><video id="video" playsinline muted autoplay></video><canvas id="frozen" hidden></canvas>
 <div id="label">Loading model…</div><div id="status"></div></div>
 <div id="bar"><button id="startBtn" class="big">▶ Start camera</button>
+<button id="recDef" class="big red" hidden>● Record DEFECT</button>
+<button id="recOk" class="big green" hidden>● Record NO DEFECT</button>
 <button id="okBtn" class="big green" disabled>✔ Confirm correct</button>
 <button id="fixBtn" class="big red" disabled>✎ Correct</button>
-<button id="setBtn" class="small">⚙</button></div>
+<button id="endBtn" class="small" hidden>■<br><small>End</small></button><button id="setBtn" class="small">⚙</button></div>
+<div id="dash" hidden><div id="dashHead"></div><div id="dashBody"></div></div>
 <div id="picker" class="sheet" hidden><h2>Correct this photo</h2><div id="choices"></div>
 <input id="note" placeholder="Optional note"><button id="cancelBtn" class="big">Cancel</button></div>
 <div id="settings" class="sheet" hidden><h2>Settings</h2>
@@ -16,6 +19,15 @@
 <label>Defect threshold: <span id="thrv"></span> (lower = more defects flagged, default 0.5)<input id="thr" type="range" step="0.05" min="0.1" max="0.9"></label>
 <label>Equipment gate: <span id="gthrv"></span> (higher = stricter, needs clearer view of equipment)<input id="gthr" type="range" step="0.05" min="0.05" max="0.95"></label>
 <label>Classify every N frames <input id="every" type="number" min="1" max="30"></label>
+<label class="row"><input type="checkbox" id="trainChk"> Training mode: show Confirm correct / Correct buttons during audits</label><button id="auditBtn" class="big">Audit sessions…</button>
 <p id="qinfo"></p><button id="retryBtn" class="big">Retry uploads now</button>
 <button id="saveSet" class="big green">Save</button></div>
-<script src="ort.wasm.min.js"></script><script src="app.js"></script></body></html>
+<div id="startSheet" class="sheet" hidden><h2>Start audit</h2>
+<label>Site name *<input id="aSite" placeholder="e.g. Cult HSR Layout" autocomplete="off"></label><div id="siteList" class="chips"></div>
+<label>Auditor name (optional)<input id="aAud"></label><p>Date/time: <b id="aNow"></b></p>
+<button id="aGo" class="big green">▶ Start audit</button><button id="aTrain" class="big">Camera only (no session)</button><h3>Past sessions</h3><div id="past"></div></div>
+<div id="recSheet" class="sheet" hidden><h2 id="recTitle"></h2><img id="recImg"><p id="recModel"></p><label>Category<select id="recCat"></select></label>
+<input id="recNote" placeholder="Optional note"><button id="recSave" class="big green">Save observation</button><button id="recCancel" class="big">Cancel</button></div>
+<div id="summary" class="sheet" hidden><div id="sumBody"></div><div class="btns"><button id="sumHtml" class="big">⬇ Report (HTML)</button><button id="sumPdf" class="big">🖨 PDF / Print</button>
+<button id="sumCsv" class="big">⬇ CSV</button><button id="sumShare" class="big">↗ Share</button><button id="sumUp" class="big green">☁ Upload to Drive</button></div><p id="upMsg"></p><button id="sumClose" class="big">Done</button></div>
+<script src="ort.wasm.min.js"></script><script src="app.js"></script><script src="audit.js"></script></body></html>

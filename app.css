@@ -15,3 +15,18 @@ input{width:100%;font-size:18px;padding:12px;border-radius:8px;border:0;margin-t
 #choices .yn{display:flex;gap:8px}#choices .yn button{flex:1;font-size:1.1em;padding:12px}#choices button.sel{outline:3px solid #fff;font-weight:bold}
 #choices .red{background:#b22}#choices .green{background:#282}
 #stage.idle{border-color:#888}
+
+#bar .big{font-size:16px}#bar .small small{font-size:11px}
+#dash{position:fixed;bottom:140px;max-height:60vh;overflow:auto;left:10px;right:10px;z-index:5;background:rgba(0,0,0,.82);border-radius:10px;font-size:15px}
+#dashHead{padding:8px 10px;cursor:pointer}#dashBody{display:none;padding:0 10px 10px}#dash.open #dashBody{display:block}
+.r{color:#ff5a6a}.g{color:#3ddc6a}.y{color:#ffd400}
+.kp{display:flex;gap:6px;margin:6px 0}.kp div{flex:1;background:#222;border-radius:8px;padding:6px;text-align:center;font-size:12px}.kp b{display:block;font-size:22px}
+.ct{width:100%;border-collapse:collapse;font-size:14px}.ct td,.ct th{padding:4px;border-bottom:1px solid #444;text-align:left}.ct td+td,.ct th+th{text-align:right;width:15%}
+.cb{background:#333;height:5px;margin-top:3px;border-radius:3px}.cb i{display:block;height:5px;background:#e33;border-radius:3px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{padding:10px 14px;font-size:15px;background:#244}
+.ps{display:flex;gap:8px;align-items:center;background:#1c1c1c;padding:8px;border-radius:8px}.ps div{flex:1}.ps button{padding:10px 14px}
+select{width:100%;font-size:18px;padding:12px;border-radius:8px;margin-top:4px}#recImg{max-width:100%;max-height:35vh;object-fit:contain;border-radius:8px}
+.score{text-align:center;font-size:16px;background:#1c1c1c;border-radius:12px;padding:10px}.score b{display:block;font-size:56px}
+.ob{display:flex;gap:10px;background:#1c1c1c;border-radius:8px;padding:6px;margin:6px 0}.ob img{width:120px;border-radius:6px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:flex;gap:8px;align-items:center}.row input{width:auto}input.err{outline:3px solid #e33}
+#summary,#startSheet,#recSheet{background:#0a0a0a}

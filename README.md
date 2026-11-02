@@ -15,3 +15,6 @@ Green border = OK (p(ok) ≥ 0.6), red = top defect; smoothed over 5 inferences,
 Confirm correct = save frame with the model's label. Correct = pick true label (model's guess highlighted in yellow), optional note.
 Photos queue in IndexedDB and upload when online (retry every 60 s or via ⚙ > Retry).
 Each upload: `<timestamp>_true-<label>_pred-<label>.jpg` + `.json` sidecar (true/pred label, confidence, probs, timestamp, note).
+
+## Audit sessions (v8)
+Start audit → site name (recent sites remembered) + optional auditor → camera runs; tap **Record DEFECT / Record NO DEFECT** to log an observation (category + note editable). Live dashboard panel (tap header to expand). **End** → compliance score (= % no-defect), category breakdown, defect list; download HTML/PDF/CSV, Share, or Upload to Drive (`Safety Glass/audit_sessions/<site>_<date>/`, needs the updated Apps Script redeployed). Sessions are kept in IndexedDB and unfinished ones can be resumed. Training buttons: ⚙ → Training mode.
