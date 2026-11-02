@@ -1,8 +1,8 @@
 'use strict';
 const $=i=>document.getElementById(i);
-const CATS=['defect_electrical','defect_equipment','defect_facility','defect_fire','defect_physical','defect_signage','other'];
-const NM={defect_electrical:'Electrical',defect_equipment:'Equipment',defect_facility:'Facility',defect_fire:'Fire safety',defect_physical:'Physical hazard',defect_signage:'Signage',other:'Other'};
-const COL=['#ffb300','#42a5f5','#ab47bc','#ff3b3b','#ff7043','#26c6da','#9e9e9e'];
+const CATS=['defect_electrical','defect_equipment','defect_facility','defect_fire','defect_physical','defect_signage','first_aid','other'];
+const NM={defect_electrical:'Electrical',defect_equipment:'Equipment',defect_facility:'Facility',defect_fire:'Fire safety',defect_physical:'Physical hazard',defect_signage:'Signage',first_aid:'First aid kit',other:'Other'};
+const COL=['#ffb300','#42a5f5','#ab47bc','#ff3b3b','#ff7043','#26c6da','#66bb6a','#9e9e9e'];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const p1=(n,d)=>d?Math.round(n*1000/d)/10:0,fd=iso=>new Date(iso).toLocaleDateString('en-IN',{dateStyle:'medium'});
 const DB=new Promise((res,rej)=>{const r=indexedDB.open('sgAudit',1);r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('sessions',{keyPath:'id'});d.createObjectStore('obs',{keyPath:'id',autoIncrement:true}).createIndex('sid','sid')};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
@@ -22,11 +22,14 @@ function render(){charts.forEach(c=>c.destroy());charts=[];const site=$('fSite')
  charts.push(new Chart($('cCat'),{type:'bar',data:{labels:cs.map(x=>NM[x.c]),datasets:[{label:'Defect',data:cs.map(x=>x.d),backgroundColor:'#ff3b3b'},{label:'No defect',data:cs.map(x=>x.ok),backgroundColor:'#19c15a'}]},options:{scales:{x:{stacked:true},y:{stacked:true,ticks:{precision:0}}}}}));
  const dc=cs.filter(x=>x.d);charts.push(new Chart($('cDon'),{type:'doughnut',data:{labels:dc.map(x=>NM[x.c]),datasets:[{data:dc.map(x=>x.d),backgroundColor:dc.map(x=>COL[CATS.indexOf(x.c)])}]},options:{plugins:{legend:{position:'right'}}}}));
  $('tTop').innerHTML='<tr><th>#</th><th>Category</th><th>Defects</th><th>Share</th><th>% of checks</th></tr>'+(dc.length?dc.sort((a,b)=>b.d-a.d).map((x,i)=>`<tr><td>${i+1}</td><td>${NM[x.c]}</td><td>${x.d}</td><td>${p1(x.d,def)}%</td><td>${p1(x.d,x.n)}%</td></tr>`).join(''):'<tr><td colspan=5>No defects recorded</td></tr>');
+ const mm={};os.forEach(o=>o.kit&&o.kit.missing.forEach(k=>mm[k]=(mm[k]||0)+1));const ml=Object.entries(mm).sort((a,b)=>b[1]-a[1]),kc=os.filter(o=>o.kit).length;
+ if(ml.length)charts.push(new Chart($('cMiss'),{type:'bar',data:{labels:ml.map(x=>x[0].replace(/_/g,' ')),datasets:[{label:'Times missing',data:ml.map(x=>x[1]),backgroundColor:'#ff7043'}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{precision:0}}}}}));
+ $('tMiss').innerHTML=ml.length?'<tr><th>Item</th><th>Missing</th><th>% of kit checks</th></tr>'+ml.map(([k,n])=>`<tr><td>${k.replace(/_/g,' ')}</td><td>${n}</td><td>${p1(n,kc)}%</td></tr>`).join(''):`<tr><td>${kc?'No missing items in '+kc+' kit checks':'No first-aid kit checks yet'}</td></tr>`;
  const bySite={};rows.forEach(r=>{const b=bySite[r.s.site]||(bySite[r.s.site]={n:0,o:0,d:0,last:''});b.n++;b.o+=r.n;b.d+=r.d;if(r.s.start>b.last)b.last=r.s.start});
  $('tSite').innerHTML='<tr><th>Site</th><th>Sessions</th><th>Observations</th><th>% defect</th><th>Last audit</th></tr>'+Object.entries(bySite).sort((a,b)=>p1(b[1].d,b[1].o)-p1(a[1].d,a[1].o)).map(([k,b])=>{const p=p1(b.d,b.o);return `<tr><td>${esc(k)}</td><td>${b.n}</td><td>${b.o}</td><td class="${p<=10?'g':p<=30?'y':'r'}">${p}%</td><td>${fd(b.last)}</td></tr>`}).join('')}
 $('fSite').onchange=$('fFrom').onchange=$('fTo').onchange=render;$('fReset').onclick=()=>{$('fSite').value=$('fFrom').value=$('fTo').value='';render()};
 $('csv').onclick=()=>{if(!rows.length)return alert('No sessions to export');const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
- const t=['session_id,site,auditor,start,end,observations,defects,no_defects,pct_defect,'+CATS.map(c=>c+'_defects').join(',')].concat(rows.map(r=>{const o=O.filter(x=>x.sid===r.s.id);return[r.s.id,r.s.site,r.s.auditor,r.s.start,r.s.end,r.n,r.d,r.n-r.d,r.p,...CATS.map(c=>o.filter(x=>x.category===c&&x.verdict==='defect').length)].map(q).join(',')})).join('\r\n');
+ const t=['session_id,site,auditor,start,end,observations,defects,no_defects,pct_defect,'+CATS.map(c=>c+'_defects').join(',')+',kit_checks,kit_missing_items'].concat(rows.map(r=>{const o=O.filter(x=>x.sid===r.s.id);return[r.s.id,r.s.site,r.s.auditor,r.s.start,r.s.end,r.n,r.d,r.n-r.d,r.p,...CATS.map(c=>o.filter(x=>x.category===c&&x.verdict==='defect').length),o.filter(x=>x.kit).length,o.flatMap(x=>x.kit?x.kit.missing:[]).join('; ')].map(q).join(',')})).join('\r\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download='safety_glass_analytics_'+new Date().toISOString().slice(0,10)+'.csv';a.click()};
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 window.SG_ANALYTICS_TEST={reload:load};load();
