@@ -1,20 +1,12 @@
-# Safety Glass – phone scanner (PWA)
-Live camera classifier (v4 YOLO11n-cls, onnxruntime-web/wasm) with Confirm-correct / Correct buttons that upload labelled photos to Google Drive via an Apps Script web app.
+# Safety Glass (merged app)
 
-## Apps Script setup (once)
-1. Open https://script.google.com > New project. Name it "Safety Glass uploader".
-2. Replace Code.gs with `apps_script/Code.gs` from this repo. Save.
-3. Select function `setup` > Run > approve permissions (Advanced > Go to project if warned). This creates My Drive/Safety Glass/phone_corrections.
-4. Deploy > New deployment > gear > Web app. Execute as: **Me**. Who has access: **Anyone**. Deploy.
-5. Copy the Web app URL (ends in /exec). On the phone, open the app > ⚙ > paste URL > Save.
-(After editing Code.gs later: Deploy > Manage deployments > Edit > Version: New version, so the URL stays the same.)
+One app, three camera modes (switch with **☰ Modes** on the main screen or the buttons on each page):
 
-## Use
-Open the site in Chrome on Android > Start camera > allow. Menu ⋮ > Add to Home screen.
-Green border = OK (p(ok) ≥ 0.6), red = top defect; smoothed over 5 inferences, every 3rd frame.
-Confirm correct = save frame with the model's label. Correct = pick true label (model's guess highlighted in yellow), optional note.
-Photos queue in IndexedDB and upload when online (retry every 60 s or via ⚙ > Retry).
-Each upload: `<timestamp>_true-<label>_pred-<label>.jpg` + `.json` sidecar (true/pred label, confidence, probs, timestamp, note).
+| Page | What it does |
+|---|---|
+| `index.html` – **Defect check & Audit** | onnxruntime-web: `gate.onnx` (equipment present), `binary.onnx` (v5 defect/ok), `model.onnx` (v4 category), two-stage rule, stable frames, dark/blur checks, sliders, corrections/training uploads (Apps Script `apps_script/Code.gs`), audit sessions (site, Record DEFECT / NO DEFECT, live dashboard, score, HTML/PDF/CSV report, Drive upload, IndexedDB). |
+| `hazard.html` – **Hazard scan** (original Safety Glass) | HSE hazard library (`hazards.js`), COCO-SSD, LM Studio vision AI (Gemma, optional – shows an error badge if LM Studio is not reachable), Custom YOLO (`models/safety-yolo/`, laptop only), close-up defect check, multi-frame confirmation, feedback dataset, snapshot/CSV. Full docs: `README_hazard_scan.md`. `hazard.html#library` opens the Hazard Library. |
+| `ghs.html` – **GHS / First aid** | YOLO11n detector `det_ghs_firstaid.onnx` (9 GHS pictograms, first-aid items, chemical/expiry labels) drawing boxes; ~0.3 s/frame on WASM. |
 
-## Audit sessions (v8)
-Start audit → site name (recent sites remembered) + optional auditor → camera runs; tap **Record DEFECT / Record NO DEFECT** to log an observation (category + note editable). Live dashboard panel (tap header to expand). **End** → compliance score (= % no-defect), category breakdown, defect list; download HTML/PDF/CSV, Share, or Upload to Drive (`Safety Glass/audit_sessions/<site>_<date>/`, needs the updated Apps Script redeployed). Sessions are kept in IndexedDB and unfinished ones can be resumed. Training buttons: ⚙ → Training mode.
+Laptop: double-click `Start_Safety_Glass.bat` (Python 3.11 `http.server` on http://localhost:8000). Phone: https://sarath200795.github.io/safety-glass-phone/ (installable PWA, works offline after first load except the COCO/TF.js CDN in Hazard scan).
+Assistive tool only – not a substitute for a competent inspection (Indian standards: Factories Act, NBC 2016 Part 4, IS 2190, IS 15683).

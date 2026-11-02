@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Safety Glass</title>
+<link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png">
+</head>
+<body>
+<div id="stage">
+  <video id="video" playsinline muted autoplay></video>
+  <canvas id="overlay"></canvas>
+  <div id="status">Loading model…</div>
+  <div id="aiStatus" class="idle">AI: off</div>
+  <div id="count">Hazards: <span id="hazardCount">0</span></div>
+  <div id="fbPop" hidden><div id="fbPopInfo"></div>
+    <input id="fbNote" type="text" placeholder="Optional note">
+    <div class="row"><button id="fbPopOk" class="ok">✓ Correct</button><button id="fbPopBad" class="bad">✗ Wrong</button><button id="fbPopClose">✕</button></div>
+  </div>
+</div>
+<div id="controls">
+  <button id="startBtn">Start camera</button>
+  <button id="switchBtn">Switch camera</button>
+  <button id="pauseBtn">Pause</button>
+  <button id="snapBtn">Snapshot report</button>
+  <button id="csvBtn">Download CSV</button>
+  <button id="libBtn">Hazard Library</button>
+  <button id="fbBtn">Feedback</button>
+  <button id="settingsBtn">Settings</button>
+  <button onclick="location.href='index.html'" style="background:#b3001b">Defect check &amp; Audit</button>
+  <button onclick="location.href='ghs.html'" style="background:#1565c0">GHS / First aid</button>
+  <label>Mode <select id="modeSel"><option value="coco">COCO</option><option value="ai">AI</option><option value="both" selected>Both</option><option value="custom">Custom</option><option value="custom_ai">Custom+AI</option></select></label>
+  <label><input type="checkbox" id="beepChk" checked> Beep</label>
+  <label><input type="checkbox" id="voiceChk"> Voice</label>
+  <label><input type="checkbox" id="showAllChk"> Show all objects</label>
+</div>
+<div id="panel"><h2>Hazard log</h2><ul id="log"></ul></div>
+
+<div id="settings" class="modal" hidden><div class="box">
+  <h2>AI Hazard Scan settings</h2>
+  <label>LM Studio URL<input id="aiUrl" type="url"></label>
+  <label>Model<input id="aiModel" type="text"></label>
+  <label>Scan interval (s)<input id="aiInterval" type="number" min="1" step="1"></label>
+  <label>Image width (px)<input id="aiWidth" type="number" min="256" step="32"></label>
+  <label class="chk"><input type="checkbox" id="closeupChk"> Close-up defect check (crop &amp; re-check up to 2 items per cycle)</label>
+  <label>Confirm after N AI scans<input id="confirmAI" type="number" min="1" max="10" step="1"></label>
+  <label>Confirm after N COCO frames<input id="confirmCOCO" type="number" min="1" max="30" step="1"></label>
+  <label class="chk"><input type="checkbox" id="suppressChk"> Suppress labels marked ✗ Wrong 3+ times</label>
+  <div class="row"><button id="aiTestBtn">Test connection</button><button id="settingsClose">Save &amp; close</button></div>
+  <p class="hint">Run LM Studio → Developer → Start server (port 1234) with CORS enabled and a vision model (default google/gemma-4-e4b) loaded.</p>
+</div></div>
+
+<div id="library" class="modal" hidden><div class="box wide">
+  <div class="row"><h2>Hazard Library (HSE)</h2><button id="libClose">Close</button></div>
+  <input id="libSearch" type="search" placeholder="Search hazards, GHS, extinguisher, defects…">
+  <p class="hint" id="libDisclaimer"></p>
+  <div id="libList"></div>
+</div></div>
+
+<div id="feedbackPanel" class="modal" hidden><div class="box wide">
+  <div class="row"><h2>Feedback</h2><button id="fbClose">Close</button></div>
+  <div id="fbSummary"></div>
+  <div class="row"><button id="fbExport">Export dataset (JSON + CSV)</button><button id="fbClear" class="bad">Clear</button></div>
+  <p class="hint">Stored in this browser (localStorage, max 300 entries incl. 256px thumbnails).</p>
+  <div id="fbList"></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+<script src="hazards.js"></script>
+<script src="hazard_app.js"></script>
+</body>
+</html>

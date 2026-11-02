@@ -10,7 +10,7 @@
 <button id="recOk" class="big green" hidden>● Record NO DEFECT</button>
 <button id="okBtn" class="big green" disabled>✔ Confirm correct</button>
 <button id="fixBtn" class="big red" disabled>✎ Correct</button>
-<button id="endBtn" class="small" hidden>■<br><small>End</small></button><button id="setBtn" class="small">⚙</button></div>
+<button id="endBtn" class="small" hidden>■<br><small>End</small></button><button id="setBtn" class="small">⚙</button><button id="modesBtn" class="small" onclick="document.getElementById('modes').hidden=false">☰<br><small>Modes</small></button></div>
 <div id="dash" hidden><div id="dashHead"></div><div id="dashBody"></div></div>
 <div id="picker" class="sheet" hidden><h2>Correct this photo</h2><div id="choices"></div>
 <input id="note" placeholder="Optional note"><button id="cancelBtn" class="big">Cancel</button></div>
@@ -30,4 +30,10 @@
 <input id="recNote" placeholder="Optional note"><button id="recSave" class="big green">Save observation</button><button id="recCancel" class="big">Cancel</button></div>
 <div id="summary" class="sheet" hidden><div id="sumBody"></div><div class="btns"><button id="sumHtml" class="big">⬇ Report (HTML)</button><button id="sumPdf" class="big">🖨 PDF / Print</button>
 <button id="sumCsv" class="big">⬇ CSV</button><button id="sumShare" class="big">↗ Share</button><button id="sumUp" class="big green">☁ Upload to Drive</button></div><p id="upMsg"></p><button id="sumClose" class="big">Done</button></div>
+<div id="modes" class="sheet" hidden><h2>Safety Glass modes</h2>
+<button class="big red" onclick="document.getElementById('modes').hidden=true">Defect check &amp; Audit (this screen)</button>
+<button class="big" onclick="location.href='hazard.html'">Hazard scan – HSE library, COCO / LM Studio AI (Gemma) / Custom YOLO</button>
+<button class="big" onclick="location.href='ghs.html'">GHS pictograms / First-aid items detector</button>
+<button class="big" onclick="location.href='hazard.html#library'">Hazard Library (HSE, Indian standards notes)</button>
+<button class="big green" onclick="document.getElementById('modes').hidden=true">Close</button></div>
 <script src="ort.wasm.min.js"></script><script src="app.js"></script><script src="audit.js"></script></body></html>
