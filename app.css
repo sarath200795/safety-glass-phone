@@ -30,3 +30,11 @@ select{width:100%;font-size:18px;padding:12px;border-radius:8px;margin-top:4px}#
 .ob{display:flex;gap:10px;background:#1c1c1c;border-radius:8px;padding:6px;margin:6px 0}.ob img{width:120px;border-radius:6px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:flex;gap:8px;align-items:center}.row input{width:auto}input.err{outline:3px solid #e33}
 #summary,#startSheet,#recSheet{background:#0a0a0a}
+/* live analytics HUD */
+#dash{top:auto;bottom:112px;left:16px;right:auto;width:min(380px,calc(100% - 32px));max-height:46vh;background:rgba(0,0,0,.62);backdrop-filter:blur(2px);font-size:14px}
+#dash.min{width:auto;border-radius:20px}#dash.min #dashBody{display:none}.hmin{float:right;opacity:.7;font-size:12px}
+.hud{display:flex;gap:10px;align-items:center}.hbig{text-align:center;min-width:92px}.hbig b{display:block;font-size:38px;line-height:1}
+.hk{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:13px}.hk b{font-size:17px}
+.hbars{margin-top:6px}.hb{display:grid;grid-template-columns:86px 1fr 38px;gap:6px;align-items:center;font-size:12px;margin:2px 0}
+.hb i{display:flex;height:10px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden}.hb em.d{background:#ff3b3b}.hb em.o{background:#19c15a}
+.y{color:#ffc400}.n{color:#bbb}

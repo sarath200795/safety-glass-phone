@@ -18,9 +18,13 @@ function stats(obs){const t={total:obs.length,def:0,ok:0,cat:{}};ACATS.forEach(c
  t.pDef=p1(t.def,t.total);t.score=t.total?p1(t.ok,t.total):0;return t}
 function catTable(t,bars){return `<table class="ct"><tr><th>Category</th><th>Def</th><th>OK</th><th>% Def</th></tr>`+ACATS.filter(c=>t.cat[c].def+t.cat[c].ok).map(c=>{const x=t.cat[c],n=x.def+x.ok,p=p1(x.def,n);
  return `<tr><td>${ANAME[c]}${bars?`<div class="cb"><i style="width:${p}%"></i></div>`:''}</td><td>${x.def}</td><td>${x.ok}</td><td>${p}%</td></tr>`}).join('')+(t.total?'':'<tr><td colspan=4>No observations yet</td></tr>')+'</table>'}
-function renderDash(){if(!aS)return;const t=stats(aObs);$('dash').hidden=false;
- $('dashHead').innerHTML=`<b>${esc(aS.site)}</b> · ${t.total} obs · <span class="r">${t.def} D</span> · <span class="g">${t.ok} OK</span> · <b class="${t.pDef>0?'r':'g'}">${t.pDef}% defects</b> ${$('dash').classList.contains('open')?'▲':'▼'}`;
- $('dashBody').innerHTML=`<div class="kp"><div><b>${t.total}</b>Total</div><div class="r"><b>${t.def}</b>Defects</div><div class="g"><b>${t.ok}</b>No defect</div><div><b>${t.pDef}%</b>Defect %</div></div>`+catTable(t,true)}
+function renderDash(){if(!aS)return;const t=stats(aObs),d=$('dash'),min=localStorage.sgHudMin==='1';d.hidden=false;d.classList.toggle('min',min);d.classList.add('open');
+ const col=!t.total?'n':t.pDef<=10?'g':t.pDef<=30?'y':'r',cs=t.total?(t.score>=90?'g':t.score>=70?'y':'r'):'n';
+ if(min){$('dashHead').innerHTML=`📊 ${t.total} obs · <b class="${col}">${t.pDef}% def</b> ▸`;$('dashBody').innerHTML='';return}
+ $('dashHead').innerHTML=`<b>${esc(aS.site)}</b> <span class="hmin">— minimise</span>`;
+ const cats=ACATS.filter(c=>t.cat[c].def+t.cat[c].ok),mx=Math.max(1,...cats.map(c=>t.cat[c].def+t.cat[c].ok));
+ $('dashBody').innerHTML=`<div class="hud"><div class="hbig ${col}"><b>${t.pDef}%</b>defects</div><div class="hk"><span><b>${t.total}</b> obs</span><span class="r"><b>${t.def}</b> defect</span><span class="g"><b>${t.ok}</b> no-defect</span><span class="${cs}"><b>${t.total?t.score+'%':'–'}</b> compliance</span></div></div>`+
+ (cats.length?'<div class="hbars">'+cats.map(c=>{const x=t.cat[c];return `<div class="hb"><span>${ANAME[c]}</span><i><em class="d" style="width:${x.def/mx*100}%"></em><em class="o" style="width:${x.ok/mx*100}%"></em></i><small>${x.def}/${x.def+x.ok}</small></div>`}).join('')+'</div>':'<small>No observations yet – tap Record DEFECT / NO DEFECT</small>')}
 function setMode(){const on=!!aS,tr=localStorage.sgTrain==='1';['recDef','recOk','endBtn'].forEach(i=>$(i).hidden=!on);$('okBtn').hidden=$('fixBtn').hidden=on&&!tr;$('dash').hidden=!on;$('trainChk').checked=tr;if(on)renderDash()}
 // ---- start screen
 const recentSites=()=>JSON.parse(localStorage.sgSites||'[]');
@@ -80,9 +84,12 @@ window.SG_AUDIT={stats,csv,reportHtml,openStart,beginSession,openRec,saveRec,end
 document.addEventListener('DOMContentLoaded',async()=>{
  $('aGo').onclick=beginSession;$('aTrain').onclick=()=>{$('startSheet').hidden=true;setMode();if(!running&&!window.SG_TEST)start()};
  $('recDef').onclick=()=>openRec('defect');$('recOk').onclick=()=>openRec('no_defect');$('recSave').onclick=saveRec;$('recCancel').onclick=()=>{aPend=null;$('recSheet').hidden=true};
- $('endBtn').onclick=endSession;$('dashHead').onclick=()=>{$('dash').classList.toggle('open');renderDash()};
+ $('endBtn').onclick=endSession;$('dashHead').onclick=()=>{localStorage.sgHudMin=localStorage.sgHudMin==='1'?'0':'1';renderDash()};
  $('sumHtml').onclick=()=>dl(fileBase(aSum.s)+'_report.html',reportHtml(aSum),'text/html');$('sumCsv').onclick=()=>dl(fileBase(aSum.s)+'.csv',csv(aSum),'text/csv');$('sumPdf').onclick=printReport;
  $('sumShare').onclick=share;$('sumUp').onclick=uploadDrive;$('sumClose').onclick=()=>{$('summary').hidden=true;openStart()};$('auditBtn').onclick=()=>{if(aS)return;$('settings').hidden=true;openStart()};
  $('trainChk').onchange=()=>{localStorage.sgTrain=$('trainChk').checked?'1':'0';setMode()};
  setMode();const open=(await A.allS()).filter(s=>!s.end).sort((a,b)=>b.start.localeCompare(a.start))[0];
  if(open&&!window.SG_TEST&&confirm(`Resume unfinished audit at ${open.site}?`))resumeSession(open.id);else openStart()});
+
+// test-only hook (used by headless tests; not called by the UI)
+window.SG_AUDIT_TEST={A,stats,ACATS,ANAME};

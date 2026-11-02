@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><title>Safety Glass – Analytics</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#0d0d0d;color:#eee;font-family:system-ui,sans-serif;padding:12px;max-width:1100px;margin:auto}
+h1{font-size:22px;margin:4px 0 10px}h2{font-size:16px;margin:0 0 8px}.top{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,select,input{font-size:15px;padding:9px 12px;border-radius:8px;border:0}button{background:#333;color:#fff;font-weight:700}.g{color:#3ddc6a}.r{color:#ff5a6a}.y{color:#ffd400}
+.f{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.f label{font-size:13px;display:flex;flex-direction:column;gap:3px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:10px 0}.kp div{background:#1b1b1b;border-radius:10px;padding:10px;text-align:center;font-size:13px}.kp b{display:block;font-size:26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px}.card{background:#161616;border-radius:12px;padding:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid #2a2a2a;text-align:left}th{color:#aaa}
+#empty{background:#161616;border-radius:12px;padding:30px;text-align:center;font-size:17px}</style></head><body>
+<div class="top"><h1 style="flex:1">📊 Audit analytics</h1><button onclick="location.href='index.html'">◀ Audit</button><button id="csv">⬇ Export CSV</button></div>
+<div class="f"><label>Site<select id="fSite"><option value="">All sites</option></select></label><label>From<input type="date" id="fFrom"></label><label>To<input type="date" id="fTo"></label><button id="fReset" style="align-self:flex-end">Reset</button></div>
+<div id="empty" hidden></div>
+<div id="main" hidden><div class="kp" id="kp"></div>
+<div class="grid"><div class="card"><h2>% defects per session (trend)</h2><canvas id="cTrend"></canvas></div>
+<div class="card"><h2>Defects by category</h2><canvas id="cCat"></canvas></div>
+<div class="card"><h2>Top defect categories</h2><table id="tTop"></table></div>
+<div class="card"><h2>Defect share (donut)</h2><canvas id="cDon"></canvas></div></div>
+<div class="card" style="margin-top:10px"><h2>Site comparison</h2><table id="tSite"></table></div></div>
+<script src="chart.umd.min.js"></script><script src="analytics.js"></script></body></html>

@@ -25,7 +25,7 @@
 <div id="startSheet" class="sheet" hidden><h2>Start audit</h2>
 <label>Site name *<input id="aSite" placeholder="e.g. Cult HSR Layout" autocomplete="off"></label><div id="siteList" class="chips"></div>
 <label>Auditor name (optional)<input id="aAud"></label><p>Date/time: <b id="aNow"></b></p>
-<button id="aGo" class="big green">▶ Start audit</button><button id="aTrain" class="big">Camera only (no session)</button><h3>Past sessions</h3><div id="past"></div></div>
+<button id="aGo" class="big green">▶ Start audit</button><button id="aTrain" class="big">Camera only (no session)</button><button class="big" onclick="location.href='analytics.html'">📊 Analytics</button><h3>Past sessions</h3><div id="past"></div></div>
 <div id="recSheet" class="sheet" hidden><h2 id="recTitle"></h2><img id="recImg"><p id="recModel"></p><label>Category<select id="recCat"></select></label>
 <input id="recNote" placeholder="Optional note"><button id="recSave" class="big green">Save observation</button><button id="recCancel" class="big">Cancel</button></div>
 <div id="summary" class="sheet" hidden><div id="sumBody"></div><div class="btns"><button id="sumHtml" class="big">⬇ Report (HTML)</button><button id="sumPdf" class="big">🖨 PDF / Print</button>
@@ -34,6 +34,7 @@
 <button class="big red" onclick="document.getElementById('modes').hidden=true">Defect check &amp; Audit (this screen)</button>
 <button class="big" onclick="location.href='hazard.html'">Hazard scan – HSE library, COCO / LM Studio AI (Gemma) / Custom YOLO</button>
 <button class="big" onclick="location.href='ghs.html'">GHS pictograms / First-aid items detector</button>
+<button class="big" onclick="location.href='analytics.html'">📊 Audit analytics (all sessions)</button>
 <button class="big" onclick="location.href='hazard.html#library'">Hazard Library (HSE, Indian standards notes)</button>
 <button class="big green" onclick="document.getElementById('modes').hidden=true">Close</button></div>
 <script src="ort.wasm.min.js"></script><script src="app.js"></script><script src="audit.js"></script></body></html>
